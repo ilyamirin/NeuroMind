@@ -1,5 +1,8 @@
 package patterns;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+@XStreamAlias("pattern")
 public class Pattern {
 
     private Long id;

@@ -12,13 +12,18 @@ import java.util.List;
 
 public class XMLPatternStore implements IPatternStore {
 
-    private XStream xstream = new XStream();
+    private XStream xstream;
     
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
     //TODO: переработать
     private String filename = "C:\\temp\\patterns.xml";
+
+    public XMLPatternStore() {
+        xstream = new XStream();        
+        xstream.processAnnotations(Pattern.class);
+    }
 
     private boolean initOut() {        
         try {
@@ -34,6 +39,7 @@ public class XMLPatternStore implements IPatternStore {
         try {
             FileInputStream stream = new FileInputStream(new File(filename));
             in = xstream.createObjectInputStream(stream);
+            //TODO: проверить работоспособность с незакрытым in
             return true;
         } catch (IOException iOException) {
             return false;
