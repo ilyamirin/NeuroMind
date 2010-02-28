@@ -1,14 +1,15 @@
 package perceptron;
 
-//import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import java.util.Random;
 
-//@XStreamAlias("neuron")
+@XStreamAlias("neuron")
 public class Neuron {
     
     private int[] weights;
 
-    //@XStreamAsAttribute
+    @XStreamAsAttribute
     private int threshold;
 
     public Neuron(int weights) {

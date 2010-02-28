@@ -1,7 +1,14 @@
 package perceptron;
 
 import com.thoughtworks.xstream.XStream;
-//import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import patterns.IPattern;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -9,18 +16,27 @@ import java.util.List;
 import patterns.IGetPatternObject;
 import patterns.IPatternStore;
 
-//@XStreamAlias("perceptron")
+@XStreamAlias("perceptron")
 public class Perceptron {
     
     private Neuron[] neurons;
 
-    //@XStreamAsAttribute
+    @XStreamAsAttribute
     private int v = 1;
+
+    @XStreamOmitField
+    XStream xstream = new XStream();
+
+    public Perceptron() {        
+    }
 
     public Perceptron(int inputs, int neurons) {
         this.neurons = new Neuron[neurons];
         for (int i = 0; i < neurons; i++)
             this.neurons[i] = new Neuron(inputs);
+        
+        xstream.processAnnotations(this.getClass());
+        xstream.processAnnotations(this.neurons[0].getClass());
     }//constructor
 
     public int[] recognize(int[] input) {
@@ -79,8 +95,34 @@ public class Perceptron {
 
     @Override
     public String toString() {
-        XStream xstream = new XStream();
-        xstream.autodetectAnnotations(true);
         return xstream.toXML(this);
     }
+
+    public boolean save(String filename) {
+        try {
+            FileOutputStream stream = new FileOutputStream(new File(filename));
+            ObjectOutputStream out = xstream.createObjectOutputStream(stream);
+            out.writeInt(v);
+            for (int i = 0; i < neurons.length; i++)
+                out.writeObject(neurons[i]);
+            out.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }//try catch
+    }//save
+
+    public boolean load(String filename) {
+        try {
+            FileInputStream stream = new FileInputStream(new File(filename));
+            ObjectInputStream in = xstream.createObjectInputStream(stream);
+            this.v = in.readInt();
+            for (int i = 0; i < neurons.length; i++)
+                neurons[i] = (Neuron) in.readObject();
+            in.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }//try catch
+    }//load
 }
