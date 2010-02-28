@@ -1,5 +1,5 @@
 package patterns;
 
 public interface IGetPatternObject {
-    public Pattern getPattern();
+    public IPattern getPattern();
 }

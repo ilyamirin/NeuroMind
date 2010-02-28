@@ -2,7 +2,7 @@ package perceptron;
 
 import com.thoughtworks.xstream.XStream;
 //import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import patterns.Pattern;
+import patterns.IPattern;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -30,7 +30,7 @@ public class Perceptron {
         return outputs;
     }//recognize
 
-    public void teach(Pattern pattern) {
+    public void teach(IPattern pattern) {
         int d = 0;
         int[] t = recognize(pattern.getInputs());
         if(!Arrays.equals(t, pattern.getInputs()))
@@ -40,13 +40,13 @@ public class Perceptron {
             }//for
     }//teach
 
-    public void teach(List<Pattern> patterns) {
-        for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();)
+    public void teach(List<IPattern> patterns) {
+        for (Iterator<IPattern> it = patterns.iterator(); it.hasNext();)
             teach(it.next());
     }//teachList
 
     public void teach(IPatternStore store) {
-        Pattern pattern;
+        IPattern pattern;
         long i = 0;
         while((pattern = store.getPatternById(i)) != null) {
             this.teach(pattern);
@@ -54,16 +54,16 @@ public class Perceptron {
         }//while
     }//teachList
 
-    public int test(Pattern pattern) {
+    public int test(IPattern pattern) {
         int result = 0;
         if(!Arrays.equals(recognize(pattern.getInputs()), pattern.getOutputs()))
             result++;
         return result;
     }//test
 
-    public int test(List<Pattern> patterns) {
+    public int test(List<IPattern> patterns) {
         int result = 0;
-        for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();) 
+        for (Iterator<IPattern> it = patterns.iterator(); it.hasNext();)
             result += test(it.next());
         return result;
     }//test

@@ -1,30 +1,21 @@
-package patterns;
+package patterns.XMLPatterns;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import patterns.IPattern;
 
 @XStreamAlias("pattern")
-public class Pattern {
-
-    private Long id;
+public class XMLPattern implements IPattern {
 
     private int[] inputs;
 
     private int[] outputs;
 
-    public Pattern() {
+    public XMLPattern() {
     }
 
-    public Pattern(int[] inputs, int[] outputs) {
+    public XMLPattern(int[] inputs, int[] outputs) {
         this.inputs = inputs;
         this.outputs = outputs;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public int[] getInputs() {
