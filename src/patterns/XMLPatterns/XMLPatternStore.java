@@ -19,13 +19,26 @@ public class XMLPatternStore implements IPatternStore {
     
     private ObjectOutputStream out;
     private ObjectInputStream in;
-
-    //TODO: переработать
-    private String filename = "C:\\temp\\patterns.xml";
+    
+    private String filename;
 
     public XMLPatternStore() {
+        xstream = new XStream();
+        xstream.processAnnotations(XMLPattern.class);
+    }
+
+    public XMLPatternStore(String filename) {
         xstream = new XStream(); 
         xstream.processAnnotations(XMLPattern.class);
+        this.filename = filename;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     private boolean initOut() {        
