@@ -6,6 +6,8 @@ import patterns.Pattern;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import patterns.IGetPatternObject;
+import patterns.IPatternStore;
 
 //@XStreamAlias("perceptron")
 public class Perceptron {
@@ -38,13 +40,40 @@ public class Perceptron {
             }//for
     }//teach
 
+    public void teach(List<Pattern> patterns) {
+        for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();)
+            teach(it.next());
+    }//teachList
+
+    public void teach(IPatternStore store) {
+        Pattern pattern;
+        long i = 0;
+        while((pattern = store.getPatternById(i)) != null) {
+            this.teach(pattern);
+            i++;
+        }//while
+    }//teachList
+
+    public int test(Pattern pattern) {
+        int result = 0;
+        if(!Arrays.equals(recognize(pattern.getInputs()), pattern.getOutputs()))
+            result++;
+        return result;
+    }//test
+
     public int test(List<Pattern> patterns) {
         int result = 0;
-        for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();) {
-            Pattern pattern = it.next();
-            if(!Arrays.equals(recognize(pattern.getInputs()), pattern.getOutputs()))
-                result += 1;            
-        }//for
+        for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();) 
+            result += test(it.next());
+        return result;
+    }//test
+
+    public int test(IGetPatternObject getPatternObject, int times) {
+        int result = 0;
+        while(times > 0) {
+            result += test(getPatternObject.getPattern());
+            times--;
+        }
         return result;
     }//test
 
