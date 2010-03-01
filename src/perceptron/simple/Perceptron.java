@@ -16,6 +16,7 @@ import java.util.List;
 import patterns.IGetPatternObject;
 import patterns.IPatternStore;
 
+//Старый перцептрон
 @XStreamAlias("perceptron")
 public class Perceptron {
     

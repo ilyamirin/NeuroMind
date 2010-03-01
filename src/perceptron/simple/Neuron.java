@@ -4,6 +4,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import java.util.Random;
 
+//Старый нейрон!!!!
 @XStreamAlias("neuron")
 public class Neuron {
     
