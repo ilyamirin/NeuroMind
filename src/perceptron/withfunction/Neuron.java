@@ -1,5 +1,6 @@
 package perceptron.withfunction;
 
+import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import perceptron.withfunction.functions.ITransferFunction;
@@ -8,10 +9,8 @@ import perceptron.withfunction.functions.ITransferFunction;
 public class Neuron {
     
     private double[] weights;
-
+        
     @XStreamAsAttribute
-    private double threshold;
-
     private ITransferFunction function;
 
     public double activate(double[] values) {
@@ -29,8 +28,7 @@ public class Neuron {
     public Neuron(int weights, ITransferFunction function) {
         this.weights = new double[weights];
         for (int i = 0; i < this.weights.length; i++)
-            this.weights[i] = Math.random();
-        this.threshold = Math.random() * weights;
+            this.weights[i] = Math.random();        
         this.function = function;        
     }//constructor
 
@@ -40,6 +38,14 @@ public class Neuron {
 
     public void setFunction(ITransferFunction function) {
         this.function = function;
+    }
+
+    @Override
+    public String toString() {
+        XStream xstream = new XStream();
+        xstream.processAnnotations(this.getClass());
+        xstream.processAnnotations(function.getClass());
+        return xstream.toXML(this);
     }
     
 }
