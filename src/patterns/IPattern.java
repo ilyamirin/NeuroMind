@@ -2,12 +2,12 @@ package patterns;
 
 public interface IPattern {
 
-    public int[] getInputs();
+    public double[] getInputs();
 
-    public void setInputs(int[] inputs);
+    public void setInputs(double[] inputs);
 
-    public int[] getOutputs();
+    public double[] getOutputs();
 
-    public void setOutputs(int[] outputs);
+    public void setOutputs(double[] outputs);
 
 }

@@ -6,31 +6,31 @@ import patterns.IPattern;
 @XStreamAlias("pattern")
 public class XMLPattern implements IPattern {
 
-    private int[] inputs;
+    private double[] inputs;
 
-    private int[] outputs;
+    private double[] outputs;
 
     public XMLPattern() {
     }
 
-    public XMLPattern(int[] inputs, int[] outputs) {
+    public XMLPattern(double[] inputs, double[] outputs) {
         this.inputs = inputs;
         this.outputs = outputs;
     }
 
-    public int[] getInputs() {
+    public double[] getInputs() {
         return inputs;
     }
 
-    public void setInputs(int[] inputs) {
+    public void setInputs(double[] inputs) {
         this.inputs = inputs;
     }
 
-    public int[] getOutputs() {
+    public double[] getOutputs() {
         return outputs;
     }
 
-    public void setOutputs(int[] outputs) {
+    public void setOutputs(double[] outputs) {
         this.outputs = outputs;
     }
 

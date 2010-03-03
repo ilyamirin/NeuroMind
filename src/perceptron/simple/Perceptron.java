@@ -49,11 +49,11 @@ public class Perceptron {
 
     public void teach(IPattern pattern) {
         int d = 0;
-        int[] t = recognize(pattern.getInputs());
-        if(!Arrays.equals(t, pattern.getInputs()))
+        int[] t = recognize(doubleToInt(pattern.getInputs()));
+        if(!Arrays.equals(t, doubleToInt(pattern.getInputs())))
             for (int i = 0; i < neurons.length; i++) {
-                d = pattern.getOutputs()[i] - t[i];
-                neurons[i].changeWeights(v, d, pattern.getInputs());
+                d = doubleToInt(pattern.getOutputs())[i] - t[i];
+                neurons[i].changeWeights(v, d, doubleToInt(pattern.getInputs()));
             }//for
     }//teach
 
@@ -73,7 +73,8 @@ public class Perceptron {
 
     public int test(IPattern pattern) {
         int result = 0;
-        if(!Arrays.equals(recognize(pattern.getInputs()), pattern.getOutputs()))
+        if(!Arrays.equals(recognize(doubleToInt(pattern.getInputs())),
+                doubleToInt(pattern.getOutputs())))
             result++;
         return result;
     }//test
@@ -126,4 +127,11 @@ public class Perceptron {
             return false;
         }//try catch
     }//load
+
+    public static int[] doubleToInt(double[] in) {
+        int[] result = new int[in.length];
+        for (int i = 0; i < in.length; i++)
+            result[i] = (int) in[i];
+        return result;
+    }
 }
