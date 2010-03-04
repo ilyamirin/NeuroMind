@@ -6,14 +6,14 @@ import java.util.Random;
 
 //Старый нейрон!!!!
 @XStreamAlias("neuron")
-public class Neuron {
+public class SimpleNeuron {
     
     private int[] weights;
 
     @XStreamAsAttribute
     private int threshold;
 
-    public Neuron(int weights) {
+    public SimpleNeuron(int weights) {
         Random random = new Random();
         this.weights = new int[weights];
         for (int i = 0; i < this.weights.length; i++) 

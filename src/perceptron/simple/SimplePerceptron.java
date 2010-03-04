@@ -18,9 +18,9 @@ import patterns.IPatternStore;
 
 //Старый перцептрон
 @XStreamAlias("perceptron")
-public class Perceptron {
+public class SimplePerceptron {
     
-    private Neuron[] neurons;
+    private SimpleNeuron[] neurons;
 
     @XStreamAsAttribute
     private int v = 1;
@@ -28,13 +28,13 @@ public class Perceptron {
     @XStreamOmitField
     XStream xstream = new XStream();
 
-    public Perceptron() {        
+    public SimplePerceptron() {
     }
 
-    public Perceptron(int inputs, int neurons) {
-        this.neurons = new Neuron[neurons];
+    public SimplePerceptron(int inputs, int neurons) {
+        this.neurons = new SimpleNeuron[neurons];
         for (int i = 0; i < neurons; i++)
-            this.neurons[i] = new Neuron(inputs);
+            this.neurons[i] = new SimpleNeuron(inputs);
         
         xstream.processAnnotations(this.getClass());
         xstream.processAnnotations(this.neurons[0].getClass());
@@ -120,7 +120,7 @@ public class Perceptron {
             ObjectInputStream in = xstream.createObjectInputStream(stream);
             this.v = in.readInt();
             for (int i = 0; i < neurons.length; i++)
-                neurons[i] = (Neuron) in.readObject();
+                neurons[i] = (SimpleNeuron) in.readObject();
             in.close();
             return true;
         } catch (Exception e) {

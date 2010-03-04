@@ -1,6 +1,7 @@
 package perceptron.withfunction;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import java.io.File;
@@ -17,6 +18,7 @@ import patterns.IPatternStore;
 import perceptron.withfunction.functions.ITransferFunction;
 import perceptron.withfunction.functions.Sigmoid;
 
+@XStreamAlias("perceptron")
 public class Perceptron {
 
     private Neuron[] neurons;
@@ -33,6 +35,8 @@ public class Perceptron {
             result[i] = this.neurons[i].activate(inputs);
         return result;
     }//recognize
+
+    //TODO: реализовать функцию распознавания в двоичном или целочисленном ыормате
 
     public void teach(IPattern pattern) {
         double d = 0.0;
@@ -56,24 +60,30 @@ public class Perceptron {
             this.teach(pattern);
             i++;
         }//while
-    }//teachList
+    }//teachPatternStore
 
-    public int test(IPattern pattern) {
-        int result = 0;
-        if(!Arrays.equals(recognize(pattern.getInputs()), pattern.getOutputs()))
-            result ++;
+    public void teach(IGetPatternObject getPatternObject, int times) {
+        for (int i = 0; i < times; i++)
+            teach(getPatternObject.getPattern());
+    }//testFromgetPatternObject
+
+    public double test(IPattern pattern) {
+        double result = 0.0;
+        double[] recognize = this.recognize(pattern.getInputs());        
+        for (int i = 0; i < pattern.getOutputs().length; i++) 
+            result += Math.abs(pattern.getOutputs()[i] - recognize[i]);        
         return result;
     }//test
 
-    public int test(List<IPattern> patterns) {
-        int result = 0;
+    public double test(List<IPattern> patterns) {
+        double result = 0;
         for (Iterator<IPattern> it = patterns.iterator(); it.hasNext();)
-            result += test(it.next());
+            result += test(it.next());        
         return result;
     }//test
 
-    public int test(IGetPatternObject getPatternObject, int times) {
-        int result = 0;
+    public double test(IGetPatternObject getPatternObject, int times) {
+        double result = 0;
         while(times > 0) {
             result += test(getPatternObject.getPattern());
             times--;
