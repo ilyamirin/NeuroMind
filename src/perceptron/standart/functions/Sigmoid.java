@@ -1,4 +1,4 @@
-package perceptron.withfunction.functions;
+package perceptron.standart.functions;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
