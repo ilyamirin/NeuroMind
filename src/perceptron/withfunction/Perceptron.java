@@ -38,6 +38,7 @@ public class Perceptron {
 
     //TODO: реализовать функцию распознавания в двоичном или целочисленном ыормате
 
+    //TODO: вынести стартегию обучения во внешний класс
     public void teach(IPattern pattern) {
         double d = 0.0;
         double[] t = recognize(pattern.getInputs());
@@ -132,5 +133,13 @@ public class Perceptron {
             return false;
         }//try catch
     }//load
+
+    public double getV() {
+        return v;
+    }
+
+    public void setV(double v) {
+        this.v = v;
+    }
 
 }
