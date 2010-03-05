@@ -34,11 +34,8 @@ public class Perceptron {
         for (int i = 0; i < this.neurons.length; i++)
             result[i] = this.neurons[i].activate(inputs);
         return result;
-    }//recognize
-
-    //TODO: реализовать функцию распознавания в двоичном или целочисленном ыормате
-
-    //TODO: вынести стартегию обучения во внешний класс
+    }//recognize    
+    
     public void teach(IPattern pattern) {
         double d = 0.0;
         double[] t = recognize(pattern.getInputs());
@@ -68,23 +65,38 @@ public class Perceptron {
             teach(getPatternObject.getPattern());
     }//testFromgetPatternObject
 
-    public double test(IPattern pattern) {
-        double result = 0.0;
+    public int test(IPattern pattern) {
+        double mistake = 0.0;
         double[] recognize = this.recognize(pattern.getInputs());        
         for (int i = 0; i < pattern.getOutputs().length; i++) 
-            result += Math.abs(pattern.getOutputs()[i] - recognize[i]);        
-        return result;
+            mistake += Math.abs(pattern.getOutputs()[i] - recognize[i]);
+        if(mistake < (pattern.getOutputs().length * 0.05)){
+            return 0;
+        } else {
+            return 1;
+        }//else if
     }//test
 
-    public double test(List<IPattern> patterns) {
-        double result = 0;
+    public int test(List<IPattern> patterns) {
+        int result = 0;
         for (Iterator<IPattern> it = patterns.iterator(); it.hasNext();)
             result += test(it.next());        
         return result;
     }//test
 
-    public double test(IGetPatternObject getPatternObject, int times) {
-        double result = 0;
+    public int test(IPatternStore store) {
+        int result = 0;
+        IPattern pattern;
+        long i = 0;
+        while((pattern = store.getPatternById(i)) != null) {
+            result += test(pattern);
+            i++;
+        }//while
+        return result;
+    }//teachPatternStore
+
+    public int test(IGetPatternObject getPatternObject, int times) {
+        int result = 0;
         while(times > 0) {
             result += test(getPatternObject.getPattern());
             times--;
