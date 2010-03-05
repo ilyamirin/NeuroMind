@@ -17,7 +17,7 @@ import patterns.IGetPatternObject;
 import patterns.IPatternStore;
 
 //Старый перцептрон
-@XStreamAlias("perceptron")
+@XStreamAlias("simplePerceptron")
 public class SimplePerceptron {
     
     private SimpleNeuron[] neurons;
@@ -71,11 +71,21 @@ public class SimplePerceptron {
         }//while
     }//teachList
 
+    public void teach(IGetPatternObject getPatternObject, int times) {
+        for (int i = 0; i < times; i++)
+            teach(getPatternObject.getPattern());
+    }//testFromgetPatternObject
+
     public int test(IPattern pattern) {
         int result = 0;
+        int[] recognize = recognize(doubleToInt(pattern.getInputs()));
+        for (int i = 0; i < recognize.length; i++)
+            result += Math.abs(recognize[i] - pattern.getOutputs()[i]);
+        /*
         if(!Arrays.equals(recognize(doubleToInt(pattern.getInputs())),
                 doubleToInt(pattern.getOutputs())))
             result++;
+        */
         return result;
     }//test
 

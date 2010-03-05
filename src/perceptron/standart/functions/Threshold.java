@@ -1,7 +1,13 @@
 package perceptron.standart.functions;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
+
+@XStreamAlias("threshold")
 public class Threshold implements ITransferFunction {
 
+    @XStreamAsAttribute
     private double threshold;
 
     public Threshold() {
