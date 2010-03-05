@@ -1,4 +1,4 @@
-package perceptron.standart;
+package perceptron;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -15,8 +15,8 @@ import java.util.List;
 import patterns.IGetPatternObject;
 import patterns.IPattern;
 import patterns.IPatternStore;
-import perceptron.standart.functions.ITransferFunction;
-import perceptron.standart.functions.Sigmoid;
+import perceptron.functions.ITransferFunction;
+import perceptron.functions.Sigmoid;
 
 @XStreamAlias("perceptron")
 public class Perceptron {

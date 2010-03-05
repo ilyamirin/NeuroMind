@@ -1,9 +1,9 @@
-package perceptron.standart;
+package perceptron;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import perceptron.standart.functions.ITransferFunction;
+import perceptron.functions.ITransferFunction;
 
 @XStreamAlias("neuron")
 public class Neuron {

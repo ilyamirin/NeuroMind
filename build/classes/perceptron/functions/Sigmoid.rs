@@ -1,0 +1,1 @@
+perceptron.standart.functions.Sigmoid

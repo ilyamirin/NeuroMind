@@ -1,4 +1,4 @@
-package perceptron.standart.functions;
+package perceptron.functions;
 
 public interface ITransferFunction {
     public double transfer(double sum);
