@@ -1,4 +1,4 @@
-package patterns.XMLPatterns;
+package patterns.XML;
 
 import com.thoughtworks.xstream.XStream;
 import java.io.File;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import patterns.IGetPatternObject;
 import patterns.IPatternStore;
-import patterns.IPattern;
+import patterns.Pattern;
 
 public class XMLPatternStore implements IPatternStore {
 
@@ -23,13 +23,11 @@ public class XMLPatternStore implements IPatternStore {
     private String filename;
 
     public XMLPatternStore() {
-        xstream = new XStream();
-        xstream.processAnnotations(XMLPattern.class);
+        xstream = new XStream();        
     }
 
     public XMLPatternStore(String filename) {
-        xstream = new XStream(); 
-        xstream.processAnnotations(XMLPattern.class);
+        xstream = new XStream();         
         this.filename = filename;
     }
 
@@ -76,23 +74,23 @@ public class XMLPatternStore implements IPatternStore {
         }//if
     }//savePatterns
 
-    public List<IPattern> getPatterns() {
-        ArrayList<IPattern> patterns = new ArrayList<IPattern>();
+    public List<Pattern> getPatterns() {
+        ArrayList<Pattern> patterns = new ArrayList<Pattern>();
         if(initIn())
             try {
                 while (true) 
-                    patterns.add((IPattern) in.readObject());
+                    patterns.add((Pattern) in.readObject());
             } catch (Exception e) {            
             }
         //in.close();
         return patterns;
     }//getPatterns
 
-    public IPattern getPatternById(Long id) {
+    public Pattern getPatternById(Long id) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void savePattern(IPattern pattern) {
+    public void savePattern(Pattern pattern) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

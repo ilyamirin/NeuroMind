@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import patterns.IGetPatternObject;
-import patterns.IPattern;
+import patterns.Pattern;
 import patterns.IPatternStore;
 import perceptron.functions.ITransferFunction;
 import perceptron.functions.Sigmoid;
@@ -36,7 +36,7 @@ public class Perceptron {
         return result;
     }//recognize    
     
-    public void teach(IPattern pattern) {
+    public void teach(Pattern pattern) {
         double d = 0.0;
         double[] t = recognize(pattern.getInputs());
         if(!Arrays.equals(t, pattern.getInputs()))
@@ -46,13 +46,13 @@ public class Perceptron {
             }//for
     }//teach
 
-    public void teach(List<IPattern> patterns) {
-        for (Iterator<IPattern> it = patterns.iterator(); it.hasNext();)
+    public void teach(List<Pattern> patterns) {
+        for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();)
             teach(it.next());
     }//teachList
 
     public void teach(IPatternStore store) {
-        IPattern pattern;
+        Pattern pattern;
         long i = 0;
         while((pattern = store.getPatternById(i)) != null) {
             this.teach(pattern);
@@ -65,7 +65,7 @@ public class Perceptron {
             teach(getPatternObject.getPattern());
     }//testFromgetPatternObject
 
-    public int test(IPattern pattern) {
+    public int test(Pattern pattern) {
         double mistake = 0.0;
         double[] recognize = this.recognize(pattern.getInputs());        
         for (int i = 0; i < pattern.getOutputs().length; i++) 
@@ -77,16 +77,16 @@ public class Perceptron {
         }//else if
     }//test
 
-    public int test(List<IPattern> patterns) {
+    public int test(List<Pattern> patterns) {
         int result = 0;
-        for (Iterator<IPattern> it = patterns.iterator(); it.hasNext();)
+        for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();)
             result += test(it.next());        
         return result;
     }//test
 
     public int test(IPatternStore store) {
         int result = 0;
-        IPattern pattern;
+        Pattern pattern;
         long i = 0;
         while((pattern = store.getPatternById(i)) != null) {
             result += test(pattern);

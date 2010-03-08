@@ -1,19 +1,15 @@
-package patterns.XMLPatterns;
+package patterns;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import patterns.IPattern;
-
-@XStreamAlias("pattern")
-public class XMLPattern implements IPattern {
+public class Pattern {
 
     private double[] inputs;
 
     private double[] outputs;
 
-    public XMLPattern() {
+    public Pattern() {
     }
 
-    public XMLPattern(double[] inputs, double[] outputs) {
+    public Pattern(double[] inputs, double[] outputs) {
         this.inputs = inputs;
         this.outputs = outputs;
     }

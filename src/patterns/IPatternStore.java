@@ -5,9 +5,9 @@ import java.util.List;
 public interface IPatternStore {
 
     public void savePatterns(IGetPatternObject gpo, int times);
-    public List<IPattern> getPatterns();
+    public List<Pattern> getPatterns();
 
-    public void savePattern(IPattern pattern);
-    public IPattern getPatternById(Long id);
+    public void savePattern(Pattern pattern);
+    public Pattern getPatternById(Long id);
     
 }
