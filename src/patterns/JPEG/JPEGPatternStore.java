@@ -67,7 +67,7 @@ public class JPEGPatternStore implements IPatternStore {
                 for (int j = 0; j < jPats.length; j++)
                     jpegFiles.add(jPats[j]);
             }//for 1
-            Collections.shuffle(jpegFiles);            
+            Collections.sort(jpegFiles, new JPEGFilesComparator());
         }//if
     }//GetJPEGPatterns
 
@@ -82,12 +82,13 @@ public class JPEGPatternStore implements IPatternStore {
             File file = jpegFiles.get(id);
 
             Pattern pattern = new Pattern();
+            pattern.setId(Long.parseLong(file.getName()));
             pattern.setOutputs(intToDouble(getOutputsFromFile(file)));
             pattern.setInputs(intToDouble(getPixelsFromJPEG(file)));
 
             return pattern;
             
-        } catch (Exception ex) {
+        } catch (Exception ex) {            
             return null;
         }//try catch
     }//getPattern

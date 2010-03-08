@@ -96,8 +96,10 @@ public class Perceptron {
 
     public int test(IPatternStore store, int times) {
         int result = 0;
-        for (int i = 0; i < times; i++)
+        for (int i = 0; i < times; i++){
             result += test(store.getPattern(i));
+            System.out.println(i);
+        }
         return result;
     }//test
 
