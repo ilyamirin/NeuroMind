@@ -4,10 +4,14 @@ import java.util.List;
 
 public interface IPatternStore {
 
-    public void savePatterns(IGetPatternObject gpo, int times);
+    public int getMaxPatternsNum();
+
+    public void savePatterns(List<Pattern> patterns);
     public List<Pattern> getPatterns();
 
     public void savePattern(Pattern pattern);
-    public Pattern getPatternById(Long id);
+    public Pattern getPattern(int id);
+
+    public Pattern removePattern(int id);
     
 }

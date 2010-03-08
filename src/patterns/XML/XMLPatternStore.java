@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import patterns.IGetPatternObject;
 import patterns.IPatternStore;
 import patterns.Pattern;
 
@@ -60,14 +60,13 @@ public class XMLPatternStore implements IPatternStore {
         }//try catch
     }//constructor
 
-    public void savePatterns(IGetPatternObject gpo, int times) {
+    public void savePatterns(List<Pattern> patterns) {
         if(initOut()) {
             try {
-                while (times > 0) {
-                    out.writeObject(gpo.getPattern());
+                for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();) {
+                    out.writeObject(it.next());
                     out.flush();
-                    times--;
-                }//while
+                }
                 out.close();
             } catch (IOException iOException) {
             }
@@ -86,11 +85,33 @@ public class XMLPatternStore implements IPatternStore {
         return patterns;
     }//getPatterns
 
-    public Pattern getPatternById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Pattern getPatternById(int id) {
+        if(initIn())
+            try {
+                Pattern pattern;
+                while (true) {
+                    pattern = (Pattern) in.readObject();
+                    if(pattern.getId() == id) return pattern;
+                }
+            } catch (Exception e) {
+                return null;
+            }
+        return null;
     }
 
     public void savePattern(Pattern pattern) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getMaxPatternsNum() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Pattern getPattern(int id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Pattern removePattern(int id) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

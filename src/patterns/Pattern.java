@@ -2,6 +2,8 @@ package patterns;
 
 public class Pattern {
 
+    private Long id;
+
     private double[] inputs;
 
     private double[] outputs;
@@ -12,6 +14,14 @@ public class Pattern {
     public Pattern(double[] inputs, double[] outputs) {
         this.inputs = inputs;
         this.outputs = outputs;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public double[] getInputs() {

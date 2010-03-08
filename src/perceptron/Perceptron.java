@@ -12,7 +12,6 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import patterns.IGetPatternObject;
 import patterns.Pattern;
 import patterns.IPatternStore;
 import perceptron.functions.ITransferFunction;
@@ -53,16 +52,16 @@ public class Perceptron {
 
     public void teach(IPatternStore store) {
         Pattern pattern;
-        long i = 0;
-        while((pattern = store.getPatternById(i)) != null) {
-            this.teach(pattern);
+        int i = 0;
+        while((pattern = store.getPattern(i)) != null) {
+            this.teach(pattern);            
             i++;
         }//while
     }//teachPatternStore
 
-    public void teach(IGetPatternObject getPatternObject, int times) {
+    public void teach(IPatternStore store, int times) {
         for (int i = 0; i < times; i++)
-            teach(getPatternObject.getPattern());
+            teach(store.getPattern(i));
     }//testFromgetPatternObject
 
     public int test(Pattern pattern) {
@@ -87,20 +86,18 @@ public class Perceptron {
     public int test(IPatternStore store) {
         int result = 0;
         Pattern pattern;
-        long i = 0;
-        while((pattern = store.getPatternById(i)) != null) {
+        int i = 0;
+        while((pattern = store.getPattern(i)) != null) {
             result += test(pattern);
             i++;
         }//while
         return result;
     }//teachPatternStore
 
-    public int test(IGetPatternObject getPatternObject, int times) {
+    public int test(IPatternStore store, int times) {
         int result = 0;
-        while(times > 0) {
-            result += test(getPatternObject.getPattern());
-            times--;
-        }
+        for (int i = 0; i < times; i++)
+            result += test(store.getPattern(i));
         return result;
     }//test
 

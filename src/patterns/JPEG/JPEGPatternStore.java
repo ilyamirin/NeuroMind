@@ -1,5 +1,6 @@
 package patterns.JPEG;
 
+import java.util.List;
 import patterns.Pattern;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
@@ -9,10 +10,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
-import patterns.IGetPatternObject;
+import java.util.Iterator;
+import patterns.IPatternStore;
 
-public class JPEGPatternsGetter implements IGetPatternObject {
+public class JPEGPatternStore implements IPatternStore {
 
     private ArrayList<File> jpegFiles;
 
@@ -23,10 +24,11 @@ public class JPEGPatternsGetter implements IGetPatternObject {
         return result;
     }
 
-    public static int[] getOutputsFromFilename(File file) throws IOException {
-        if(!file.isDirectory())
-            throw new IOException(file.getAbsolutePath()+" is not a directory!");
-        String filename = file.getName();
+    public static int[] getOutputsFromFile(File file) throws IOException {
+        File parent = file.getParentFile();
+        if(!parent.isDirectory())
+            throw new IOException(parent.getAbsolutePath()+" is not a directory!");
+        String filename = parent.getName();
         int[] result = new int[filename.length()];
         for(int i = 0; i < filename.length(); i++)
             result[i] = Integer.parseInt(filename.substring(i, i+1));
@@ -50,11 +52,11 @@ public class JPEGPatternsGetter implements IGetPatternObject {
         return result;
     }//getPixelsFromJPEG
 
-    public JPEGPatternsGetter() {
+    public JPEGPatternStore() {
         jpegFiles = new ArrayList<File>();
     }
 
-    public JPEGPatternsGetter(String path) {
+    public JPEGPatternStore(String path) {
         File patternDirectory = new File(path);
         if(patternDirectory.exists()) {
             File[] patternDirs =
@@ -65,29 +67,52 @@ public class JPEGPatternsGetter implements IGetPatternObject {
                 for (int j = 0; j < jPats.length; j++)
                     jpegFiles.add(jPats[j]);
             }//for 1
-            Collections.shuffle(jpegFiles);
-            System.out.println(jpegFiles.size()+" patterns in.");
+            Collections.shuffle(jpegFiles);            
         }//if
     }//GetJPEGPatterns
 
-    public int getMaxPatterns() {
+    public int getMaxPatternsNum() {
         return jpegFiles.size();
     }
 
-    public Pattern getPattern() {
+    public Pattern getPattern(int id) {
         if (jpegFiles.size() == 0) return null;
 
         try {            
-            File file = jpegFiles.remove((new Random()).nextInt(jpegFiles.size()));
+            File file = jpegFiles.get(id);
 
             Pattern pattern = new Pattern();
-            pattern.setOutputs(intToDouble(getOutputsFromFilename(file)));
+            pattern.setOutputs(intToDouble(getOutputsFromFile(file)));
             pattern.setInputs(intToDouble(getPixelsFromJPEG(file)));
 
             return pattern;
-        } catch (IOException iOException) {
+            
+        } catch (Exception ex) {
             return null;
         }//try catch
     }//getPattern
+
+    public void savePattern(Pattern pattern) {
+        //TODO: сделать сохранения паттерна в файл
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void savePatterns(List<Pattern> patterns) {
+        for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();)
+            savePattern(it.next());
+    }
+
+    public List<Pattern> getPatterns() {
+        List<Pattern> result = new ArrayList<Pattern>();
+        for (int i = 0; i < jpegFiles.size(); i++)
+             result.add(getPattern(i));
+        return result;
+    }
+
+    public Pattern removePattern(int id) {
+        Pattern pattern = getPattern(id);
+        jpegFiles.remove(id);
+        return pattern;
+    }
 
 }
