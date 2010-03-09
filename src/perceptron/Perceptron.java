@@ -50,15 +50,6 @@ public class Perceptron {
             teach(it.next());
     }//teachList
 
-    public void teach(IPatternStore store) {
-        Pattern pattern;
-        int i = 0;
-        while((pattern = store.getPattern(i)) != null) {
-            this.teach(pattern);            
-            i++;
-        }//while
-    }//teachPatternStore
-
     public void teach(IPatternStore store, int times) {
         for (int i = 0; i < times; i++)
             teach(store.getPattern(i));
@@ -83,23 +74,10 @@ public class Perceptron {
         return result;
     }//test
 
-    public int test(IPatternStore store) {
-        int result = 0;
-        Pattern pattern;
-        int i = 0;
-        while((pattern = store.getPattern(i)) != null) {
-            result += test(pattern);
-            i++;
-        }//while
-        return result;
-    }//teachPatternStore
-
     public int test(IPatternStore store, int times) {
         int result = 0;
-        for (int i = 0; i < times; i++){
+        for (int i = 0; i < times; i++)
             result += test(store.getPattern(i));
-            System.out.println(i);
-        }
         return result;
     }//test
 
