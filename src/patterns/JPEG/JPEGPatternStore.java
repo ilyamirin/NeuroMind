@@ -1,6 +1,5 @@
 package patterns.JPEG;
 
-import java.util.List;
 import patterns.Pattern;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
@@ -10,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import patterns.IPatternStore;
 
@@ -81,7 +79,7 @@ public class JPEGPatternStore implements IPatternStore {
         }//if
     }//GetJPEGPatterns
 
-    public int getMaxPatternsNum() {
+    public int getCount() {
         return jpegFiles.size();
     }
 
@@ -108,18 +106,6 @@ public class JPEGPatternStore implements IPatternStore {
     public void savePattern(Pattern pattern) {
         //TODO: сделать сохранения паттерна в файл
         throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void savePatterns(List<Pattern> patterns) {
-        for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();)
-            savePattern(it.next());
-    }
-
-    public List<Pattern> getPatterns() {
-        List<Pattern> result = new ArrayList<Pattern>();
-        for (int i = 0; i < jpegFiles.size(); i++)
-             result.add(getPattern(i));
-        return result;
     }
 
     public Pattern removePattern(int id) {

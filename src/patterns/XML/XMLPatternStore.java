@@ -103,7 +103,7 @@ public class XMLPatternStore implements IPatternStore {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public int getMaxPatternsNum() {
+    public int getCount() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

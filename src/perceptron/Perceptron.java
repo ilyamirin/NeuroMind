@@ -1,7 +1,6 @@
 package perceptron;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import java.io.File;
@@ -17,7 +16,6 @@ import patterns.IPatternStore;
 import perceptron.functions.ITransferFunction;
 import perceptron.functions.Sigmoid;
 
-@XStreamAlias("perceptron")
 public class Perceptron {
 
     private Neuron[] neurons;
@@ -74,9 +72,9 @@ public class Perceptron {
         return result;
     }//test
 
-    public int test(IPatternStore store, int times) {
+    public int test(IPatternStore store, int count) {
         int result = 0;
-        for (int i = 0; i < times; i++)
+        for (int i = 0; i < count; i++)
             result += test(store.getPattern(i));
         return result;
     }//test
