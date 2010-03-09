@@ -11,11 +11,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.regex.Matcher;
 import patterns.IPatternStore;
 
 public class JPEGPatternStore implements IPatternStore {
 
     private ArrayList<File> jpegFiles;
+
+    public static Long getIdFromFile(File file) {
+        String fileName = file.getName();
+        java.util.regex.Pattern regex =
+                java.util.regex.Pattern.compile("^\\d+");
+        Matcher matcher = regex.matcher(fileName);
+        if(matcher.find()) return Long.parseLong(matcher.group());
+        return null;
+    }
 
     public static double[] intToDouble(int[] in) {
         double[] result = new double[in.length];
@@ -82,9 +92,8 @@ public class JPEGPatternStore implements IPatternStore {
             File file = jpegFiles.get(id);
 
             Pattern pattern = new Pattern();
-
-            //System.out.println(file.getName());
             
+            pattern.setId(getIdFromFile(file)); 
             pattern.setOutputs(intToDouble(getOutputsFromFile(file)));
             pattern.setInputs(intToDouble(getPixelsFromJPEG(file)));
 
