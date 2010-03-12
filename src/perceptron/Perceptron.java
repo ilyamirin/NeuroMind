@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import patterns.Pattern;
@@ -42,7 +43,7 @@ public class Perceptron {
             }//for
     }//teach
 
-    public void teach(List<Pattern> patterns) {
+    public void teach(Collection<Pattern> patterns) {
         for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();)
             teach(it.next());
     }//teachList
@@ -59,7 +60,7 @@ public class Perceptron {
         }//else if
     }//test
 
-    public int test(List<Pattern> patterns) {
+    public int test(Collection<Pattern> patterns) {
         int result = 0;
         for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();)
             result += test(it.next());        

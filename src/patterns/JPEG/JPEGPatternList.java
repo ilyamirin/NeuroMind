@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 
-public class JPEGPatternStore<T extends Pattern> implements List<Pattern> {
+public class JPEGPatternList implements List<Pattern> {
 
     private ArrayList<File> files;
 
@@ -65,11 +65,11 @@ public class JPEGPatternStore<T extends Pattern> implements List<Pattern> {
         return result;
     }//getPixelsFromJPEG
 
-    public JPEGPatternStore() {
+    public JPEGPatternList() {
         files = new ArrayList<File>();
     }
 
-    public JPEGPatternStore(String path) {
+    public JPEGPatternList(String path) {
         File patternDirectory = new File(path);
         if(patternDirectory.exists()) {
             File[] patternDirs =
@@ -84,11 +84,6 @@ public class JPEGPatternStore<T extends Pattern> implements List<Pattern> {
         }//if
     }//GetJPEGPatterns
 
-    private void savePattern(Pattern pattern) {
-        //TODO: сделать сохранения паттерна в файл
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     public int size() {
         return files.size();
     }
@@ -98,15 +93,21 @@ public class JPEGPatternStore<T extends Pattern> implements List<Pattern> {
     }
 
     public boolean contains(Object o) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Pattern pattern = (Pattern) o;
+        for(int i = 0; i < size(); i++)
+            if(get(i).equals(pattern)) return true;
+        return false;
     }
 
     public Iterator<Pattern> iterator() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new JPEGPatternIterator(this);
     }
 
     public Object[] toArray() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Pattern[] result = new Pattern[size()];
+        for (int i = 0; i < result.length; i++)
+            result[i] = get(i);
+        return result;
     }
 
     public <T> T[] toArray(T[] ts) {
@@ -118,7 +119,13 @@ public class JPEGPatternStore<T extends Pattern> implements List<Pattern> {
     }
 
     public boolean remove(Object o) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Pattern pattern = (Pattern) o;
+        if(!contains(pattern)) {
+            return false;
+        } else {
+            remove(indexOf(pattern));
+            return true;
+        }
     }
 
     public boolean containsAll(Collection<?> clctn) {
@@ -175,12 +182,17 @@ public class JPEGPatternStore<T extends Pattern> implements List<Pattern> {
 
     public Pattern remove(int i) {
         Pattern pattern = get(i);
+        //TODO: написать удаление файла из ФС, возможно с флагом
         files.remove(i);
         return pattern;
     }
 
     public int indexOf(Object o) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Pattern pattern = (Pattern) o;
+        for (int i = 0; i < size(); i++)
+            if(get(i).equals(pattern)) return i;
+        //TODO: посмотреть как рабоатет в других листах
+        throw new UnsupportedOperationException("Not found");
     }
 
     public int lastIndexOf(Object o) {
