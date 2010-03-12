@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import patterns.Pattern;
-import patterns.IPatternStore;
 import perceptron.functions.ITransferFunction;
 import perceptron.functions.Sigmoid;
 
@@ -48,11 +47,6 @@ public class Perceptron {
             teach(it.next());
     }//teachList
 
-    public void teach(IPatternStore store, int times) {
-        for (int i = 0; i < times; i++)
-            teach(store.getPattern(i));
-    }//testFromgetPatternObject
-
     public int test(Pattern pattern) {
         double mistake = 0.0;
         double[] recognize = this.recognize(pattern.getInputs());        
@@ -69,13 +63,6 @@ public class Perceptron {
         int result = 0;
         for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();)
             result += test(it.next());        
-        return result;
-    }//test
-
-    public int test(IPatternStore store, int count) {
-        int result = 0;
-        for (int i = 0; i < count; i++)
-            result += test(store.getPattern(i));
         return result;
     }//test
 
