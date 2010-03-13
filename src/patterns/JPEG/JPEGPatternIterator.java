@@ -1,9 +1,9 @@
 package patterns.JPEG;
 
-import java.util.Iterator;
+import java.util.ListIterator;
 import patterns.Pattern;
 
-public class JPEGPatternIterator implements Iterator<Pattern> {
+public class JPEGPatternIterator implements ListIterator<Pattern> {
 
     private JPEGPatternList store;
 
@@ -18,7 +18,7 @@ public class JPEGPatternIterator implements Iterator<Pattern> {
     }
 
     public boolean hasNext() {
-        if(pointer < (store.size() - 1)) {
+        if(pointer < (store.size() - 2)) {
             return true;
         } else {
             return false;
@@ -33,6 +33,35 @@ public class JPEGPatternIterator implements Iterator<Pattern> {
 
     public void remove() {
         Pattern pattern = store.remove(pointer);
+        if(pointer >= store.size()) pointer = store.size() - 1;
+    }
+
+    public boolean hasPrevious() {
+        if(pointer > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Pattern previous() {
+        return store.get(pointer - 1);
+    }
+
+    public int nextIndex() {
+        return (pointer + 1);
+    }
+
+    public int previousIndex() {
+        return (pointer - 1);
+    }
+
+    public void set(Pattern e) {
+        store.set(pointer, e);
+    }
+
+    public void add(Pattern e) {
+        store.add(pointer, e);
     }
 
 }
