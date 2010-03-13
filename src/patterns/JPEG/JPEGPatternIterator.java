@@ -13,8 +13,9 @@ public class JPEGPatternIterator implements ListIterator<Pattern> {
         this.store = null;
     }
 
-    public JPEGPatternIterator(JPEGPatternList store) {
+    public JPEGPatternIterator(JPEGPatternList store, int pointer) {
         this.store = store;
+        this.pointer = pointer;
     }
 
     public boolean hasNext() {

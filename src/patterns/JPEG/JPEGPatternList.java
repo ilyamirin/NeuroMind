@@ -100,7 +100,7 @@ public class JPEGPatternList implements List<Pattern> {
     }
 
     public Iterator<Pattern> iterator() {
-        return new JPEGPatternIterator(this);
+        return new JPEGPatternIterator(this, 0);
     }
 
     public Object[] toArray() {
@@ -190,9 +190,8 @@ public class JPEGPatternList implements List<Pattern> {
     public int indexOf(Object o) {
         Pattern pattern = (Pattern) o;
         for (int i = 0; i < size(); i++)
-            if(get(i).equals(pattern)) return i;
-        //TODO: посмотреть как рабоатет в других листах
-        throw new UnsupportedOperationException("Not found");
+            if(get(i).equals(pattern)) return i;        
+        return -1;
     }
 
     public int lastIndexOf(Object o) {
@@ -200,15 +199,20 @@ public class JPEGPatternList implements List<Pattern> {
     }
 
     public ListIterator<Pattern> listIterator() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new JPEGPatternIterator(this, 0);
     }
 
     public ListIterator<Pattern> listIterator(int i) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new JPEGPatternIterator(this, i);
     }
 
     public List<Pattern> subList(int i, int i1) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if((i >= size()) && (i < 0)) return null;
+        if((i1 >= size()) && (i1 < 0)) return null;
+        List<Pattern> result = new ArrayList<Pattern>();
+        for(int k = i; k < i1; k++)
+            result.add(get(k));
+        return result;
     }
 
 }
