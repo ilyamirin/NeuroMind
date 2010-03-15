@@ -97,17 +97,15 @@ public class JPEGPatternList implements List<Pattern> {
         Pattern pattern = (Pattern) o;
         for(int i = 0; i < size(); i++)
             if(getIdFromFile(files.get(i)).equals(pattern.getId()))
-                if(get(i).equals(pattern)) return true;
-        //for(int i = 0; i < size(); i++)
-            
+                if(get(i).equals(pattern)) return true;            
         return false;
     }
-
-    //test pointer
+    
     public Iterator<Pattern> iterator() {
         return new JPEGPatternIterator(this, 0);
     }
 
+    //test pointer
     public Object[] toArray() {
         Pattern[] result = new Pattern[size()];
         for (int i = 0; i < result.length; i++)
