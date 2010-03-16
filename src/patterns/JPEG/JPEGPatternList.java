@@ -141,13 +141,13 @@ public class JPEGPatternList implements Collection<Pattern> {
             return true;
         }
     }
-
-    //not tested
+    
     public boolean containsAll(Collection<?> clctn) {
         if(clctn.equals(this)) return true;
+        if(clctn.size() < 1) return true;        
         boolean result = true;
-        for (Iterator it = clctn.iterator(); it.hasNext();)
-            result = result || contains(it.next());
+        for (Iterator it = clctn.iterator(); it.hasNext();)             
+            result |= contains((Pattern) it.next());        
         return result;
     }
 

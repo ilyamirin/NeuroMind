@@ -2,7 +2,6 @@ package patterns;
 
 import java.util.Iterator;
 import patterns.JPEG.JPEGPatternList;
-import patterns.Pattern;
 
 public class PatternIterator implements Iterator<Pattern> {
 
@@ -35,7 +34,7 @@ public class PatternIterator implements Iterator<Pattern> {
 
     public void remove() {
         if((pointer < store.size()) && (pointer < store.size())) {
-            store.remove(pointer);
+            store.remove(store.get(pointer));
             if(pointer >= store.size()) pointer = store.size() - 1;
         }
     }
