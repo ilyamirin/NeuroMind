@@ -1,8 +1,8 @@
 package patterns.JPEG;
 
+import patterns.PatternIterator;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.ListIterator;
 import patterns.Pattern;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
@@ -12,10 +12,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.regex.Matcher;
 
-public class JPEGPatternList implements List<Pattern> {
+public class JPEGPatternList implements Collection<Pattern> {
+
+    private String root;
+
+    private boolean removeFromFilesystem = false;
 
     private ArrayList<File> files;
 
@@ -72,6 +75,7 @@ public class JPEGPatternList implements List<Pattern> {
     public JPEGPatternList(String path) {
         File patternDirectory = new File(path);
         if(patternDirectory.exists()) {
+            this.root = path;
             File[] patternDirs =
                     patternDirectory.listFiles(new JPEGPatternDirFilter());
             files = new ArrayList<File>();
@@ -102,10 +106,9 @@ public class JPEGPatternList implements List<Pattern> {
     }
     
     public Iterator<Pattern> iterator() {
-        return new JPEGPatternIterator(this, 0);
+        return new PatternIterator(this, 0);
     }
-
-    //test pointer
+    
     public Object[] toArray() {
         Pattern[] result = new Pattern[size()];
         for (int i = 0; i < result.length; i++)
@@ -113,48 +116,71 @@ public class JPEGPatternList implements List<Pattern> {
         return result;
     }
 
+    //not tested
     public <T> T[] toArray(T[] ts) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    //not tested
     public boolean add(Pattern e) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
+    
     public boolean remove(Object o) {
+        //TODO: оптимизировать
+        if(o.getClass() != Pattern.class) return false;
         Pattern pattern = (Pattern) o;
         if(!contains(pattern)) {
             return false;
         } else {
-            remove(indexOf(pattern));
+            for(int i = 0; i < size(); i++)
+                if(getIdFromFile(files.get(i)).equals(pattern.getId())) {
+                    if(removeFromFilesystem) files.get(i).delete();
+                    files.remove(i);
+                }
             return true;
         }
     }
 
+    //not tested
     public boolean containsAll(Collection<?> clctn) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(clctn.equals(this)) return true;
+        boolean result = true;
+        for (Iterator it = clctn.iterator(); it.hasNext();)
+            result = result || contains(it.next());
+        return result;
     }
 
+    //not tested
     public boolean addAll(Collection<? extends Pattern> clctn) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean addAll(int i, Collection<? extends Pattern> clctn) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+    //not tested
     public boolean removeAll(Collection<?> clctn) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //TODO: оптимизировать
+        try {
+            for (Iterator<? extends Pattern> it =
+                    (Iterator<? extends Pattern>) clctn.iterator(); it.hasNext();)
+                remove(it.next());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
+    //not tested
     public boolean retainAll(Collection<?> clctn) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    //not tested
     public void clear() {
+        //TODO: дописать
         files.clear();
     }
 
+    //tested OK
     public Pattern get(int i) {
         if (files.size() == 0) return null;
 
@@ -175,47 +201,5 @@ public class JPEGPatternList implements List<Pattern> {
         }//try catch
     }
 
-    public Pattern set(int i, Pattern e) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void add(int i, Pattern e) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public Pattern remove(int i) {
-        Pattern pattern = get(i);
-        //TODO: написать удаление файла из ФС, возможно с флагом
-        files.remove(i);
-        return pattern;
-    }
-
-    public int indexOf(Object o) {
-        Pattern pattern = (Pattern) o;
-        for (int i = 0; i < size(); i++)
-            if(get(i).equals(pattern)) return i;        
-        return -1;
-    }
-
-    public int lastIndexOf(Object o) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public ListIterator<Pattern> listIterator() {
-        return new JPEGPatternIterator(this, 0);
-    }
-
-    public ListIterator<Pattern> listIterator(int i) {
-        return new JPEGPatternIterator(this, i);
-    }
-
-    public List<Pattern> subList(int i, int i1) {
-        if((i >= size()) && (i < 0)) return null;
-        if((i1 >= size()) && (i1 < 0)) return null;
-        List<Pattern> result = new ArrayList<Pattern>();
-        for(int k = i; k < i1; k++)
-            result.add(get(k));
-        return result;
-    }
 
 }
