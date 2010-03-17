@@ -9,10 +9,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import patterns.Pattern;
 
 //TODO: подумать о том, чтобы сделать этот класс колллекцией
 //TODO: инкапсулировать в этот класс сегментацию
-public class Image {
+//TODO: посоветоваться с димоном по поводу механизма наследования
+public class Image extends Pattern {
+
+    //super
+    private Long id;
+
+    private double[] inputs;
+
+    private double[] outputs;
+
+    //this
 
     private int w, h;
     
@@ -23,9 +35,9 @@ public class Image {
         this.h = 0;
     }
 
-    public Image(String filename) {
+    public Image(File file) {
         try {
-            loadFromFile(filename);
+            load(file);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -33,17 +45,38 @@ public class Image {
     
     private void getPixelsFromImg(BufferedImage bimg) throws IOException {
         this.w = bimg.getWidth();
-        this.h = bimg.getHeight();        
-        Integer[][] result = new Integer[w][h];
+        this.h = bimg.getHeight();                
         for(int i = 0; i < w; i++)
             for(int j = 0; j < h; j++)
                 pixels[i][j] = bimg.getRGB(i, j);
     }//getPixelsFromJPEG
 
-    public void loadFromFile(String filename) throws IOException {
-        FileInputStream in = new FileInputStream(new File(filename));
+    public void load(File file) throws IOException {
+        //loading id from filname
+        String fileName = file.getName();
+        java.util.regex.Pattern regex =
+                java.util.regex.Pattern.compile("^\\d+");
+        Matcher matcher = regex.matcher(fileName);
+        if(matcher.find()) {
+            id = Long.parseLong(matcher.group());
+        } else {
+            throw new IOException("Pattern name " +fileName+ " is incorrect.");
+        }
+
+        //loading outputs form parent directory name
+        File parent = file.getParentFile();
+        if(!parent.isDirectory())
+            throw new IOException(parent.getAbsolutePath()+" is not a directory!");
+        fileName = parent.getName();
+        int[] result = new int[fileName.length()];
+        for(int i = 0; i < fileName.length(); i++)
+            outputs[i] = Integer.parseInt(fileName.substring(i, i+1));
+
+        //loading pixels from file
+        FileInputStream in = new FileInputStream(file);
         JPEGImageDecoder jdecoder = JPEGCodec.createJPEGDecoder(in);
         BufferedImage bimg = jdecoder.decodeAsBufferedImage();
+
         getPixelsFromImg(bimg);
     }//saveToFile
 
@@ -56,10 +89,10 @@ public class Image {
         return img;
     }//putPixelsToImg
 
-    public void savePixelsToJPEG(String filemane) throws IOException {
+    public void save(File file) throws IOException {
         BufferedImage bimg = putPixelsToImg();
 
-        FileOutputStream fout = new FileOutputStream(new File(filemane));
+        FileOutputStream fout = new FileOutputStream(file);
 
         JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(fout);
         JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
@@ -97,6 +130,38 @@ public class Image {
 
     public void setW(int w) {
         this.w = w;
+    }
+
+    //-------------------------------------------
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public double[] getInputs() {
+        return inputs;
+    }
+
+    @Override
+    public void setInputs(double[] inputs) {
+        this.inputs = inputs;
+    }
+
+    @Override
+    public double[] getOutputs() {
+        return outputs;
+    }
+
+    @Override
+    public void setOutputs(double[] outputs) {
+        this.outputs = outputs;
     }
 
 
