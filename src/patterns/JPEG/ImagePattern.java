@@ -12,30 +12,21 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import patterns.Pattern;
 
-//TODO: подумать о том, чтобы сделать этот класс колллекцией
 //TODO: инкапсулировать в этот класс сегментацию
 //TODO: посоветоваться с димоном по поводу механизма наследования
-public class Image extends Pattern {
-
-    //super
-    private Long id;
-
-    private double[] inputs;
-
-    private double[] outputs;
-
-    //this
+//TODO: заменить массив pixels на super.inputs
+public class ImagePattern extends Pattern {
 
     private int w, h;
     
     private Integer[][] pixels;
 
-    public Image() {
+    public ImagePattern() {
         this.w = 0;
         this.h = 0;
     }
 
-    public Image(File file) {
+    public ImagePattern(File file) {
         try {
             load(file);
         } catch (IOException ex) {
@@ -58,7 +49,7 @@ public class Image extends Pattern {
                 java.util.regex.Pattern.compile("^\\d+");
         Matcher matcher = regex.matcher(fileName);
         if(matcher.find()) {
-            id = Long.parseLong(matcher.group());
+            super.setId(Long.parseLong(matcher.group()));
         } else {
             throw new IOException("Pattern name " +fileName+ " is incorrect.");
         }
@@ -67,10 +58,9 @@ public class Image extends Pattern {
         File parent = file.getParentFile();
         if(!parent.isDirectory())
             throw new IOException(parent.getAbsolutePath()+" is not a directory!");
-        fileName = parent.getName();
-        int[] result = new int[fileName.length()];
+        fileName = parent.getName();        
         for(int i = 0; i < fileName.length(); i++)
-            outputs[i] = Integer.parseInt(fileName.substring(i, i+1));
+            super.setOutput(Integer.parseInt(fileName.substring(i, i+1)), i);
 
         //loading pixels from file
         FileInputStream in = new FileInputStream(file);
@@ -136,32 +126,17 @@ public class Image extends Pattern {
 
     @Override
     public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+        return super.getId();
     }
 
     @Override
     public double[] getInputs() {
-        return inputs;
-    }
-
-    @Override
-    public void setInputs(double[] inputs) {
-        this.inputs = inputs;
+        return super.getInputs();
     }
 
     @Override
     public double[] getOutputs() {
-        return outputs;
-    }
-
-    @Override
-    public void setOutputs(double[] outputs) {
-        this.outputs = outputs;
+        return super.getOutputs();
     }
 
 
