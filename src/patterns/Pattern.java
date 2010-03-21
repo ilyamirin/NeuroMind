@@ -18,6 +18,22 @@ public class Pattern {
         this.outputs = outputs;
     }
 
+    public double getInput(int pos) {
+        return inputs[pos];
+    }
+
+    public void setInput(double input, int pos) {
+        this.inputs[pos] = input;
+    }
+
+    public double getOutput(double output, int pos) {
+        return outputs[pos];
+    }
+
+    public void setOutput(double output, int pos) {
+        this.outputs[pos] = output;
+    }
+    
     public Long getId() {
         return id;
     }
