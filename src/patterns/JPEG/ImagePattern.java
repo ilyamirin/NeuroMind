@@ -17,16 +17,14 @@ import patterns.Pattern;
 //TODO: заменить массив pixels на super.inputs
 public class ImagePattern extends Pattern {
 
-    private int w, h;
-    
-    private Integer[][] pixels;
+    private int w, h;   
 
     public ImagePattern() {
         this.w = 0;
         this.h = 0;
     }
 
-    public ImagePattern(File file) {
+    public ImagePattern(File file) throws Exception {
         try {
             load(file);
         } catch (IOException ex) {
@@ -36,10 +34,11 @@ public class ImagePattern extends Pattern {
     
     private void getPixelsFromImg(BufferedImage bimg) throws IOException {
         this.w = bimg.getWidth();
-        this.h = bimg.getHeight();                
+        this.h = bimg.getHeight();
+        super.setInputs(new double[w * h]);
         for(int i = 0; i < w; i++)
             for(int j = 0; j < h; j++)
-                pixels[i][j] = bimg.getRGB(i, j);
+                super.getInputs()[i + w * j] = bimg.getRGB(i, j);
     }//getPixelsFromJPEG
 
     public void load(File file) throws IOException {
@@ -58,7 +57,8 @@ public class ImagePattern extends Pattern {
         File parent = file.getParentFile();
         if(!parent.isDirectory())
             throw new IOException(parent.getAbsolutePath()+" is not a directory!");
-        fileName = parent.getName();        
+        fileName = parent.getName();
+        super.setOutputs(new double[fileName.length()]);
         for(int i = 0; i < fileName.length(); i++)
             super.setOutput(Integer.parseInt(fileName.substring(i, i+1)), i);
 
@@ -71,12 +71,11 @@ public class ImagePattern extends Pattern {
     }//saveToFile
 
     private BufferedImage putPixelsToImg() {
-        BufferedImage img = new BufferedImage(pixels.length, pixels[0].length,
-                BufferedImage.TYPE_INT_RGB);
-        for(int i = 0; i < pixels.length; i++)
-            for(int j = 0; j < pixels[0].length; j++)
-                img.setRGB(i, j, pixels[i][j]);
-        return img;
+        BufferedImage bimg = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
+        for(int i = 0; i < w; i++)
+            for(int j = 0; j < h; j++)
+                bimg.setRGB(i, j, (int) super.getInputs()[i + w * j]);
+        return bimg;
     }//putPixelsToImg
 
     public void save(File file) throws IOException {
@@ -95,35 +94,19 @@ public class ImagePattern extends Pattern {
     }//savePixelsToJPEG
 
     public int getPixel(int x, int y) {
-        return pixels[x][y];
+        return (int) super.getInputs()[x + y * x];
     }//getPixel
 
     public int getH() {
         return h;
-    }
-
-    public void setH(int h) {
-        this.h = h;
-    }
-
-    public Integer[][] getPixels() {
-        return pixels;
-    }
-
-    public void setPixels(Integer[][] pixels) {
-        this.pixels = pixels;
-    }
+    } 
 
     public int getW() {
         return w;
     }
 
-    public void setW(int w) {
-        this.w = w;
-    }
-
     //-------------------------------------------
-
+/*
     @Override
     public Long getId() {
         return super.getId();
@@ -138,6 +121,6 @@ public class ImagePattern extends Pattern {
     public double[] getOutputs() {
         return super.getOutputs();
     }
-
+*/
 
 }
