@@ -14,16 +14,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.regex.Matcher;
 
-public class JPEGPatternList implements Collection<Pattern> {
+public class JPEGPatternCollection implements Collection<Pattern> {
 
     private String root;
 
     private boolean removeFromFilesystem = false;
 
     private ArrayList<File> files;
-
-    //TODO: вынести в либу следующте пять методов
-
+    
     private static Long getIdFromFile(File file) {
         String fileName = file.getName();
         java.util.regex.Pattern regex =
@@ -68,11 +66,11 @@ public class JPEGPatternList implements Collection<Pattern> {
         return result;
     }//getPixelsFromJPEG
 
-    public JPEGPatternList() {
+    public JPEGPatternCollection() {
         files = new ArrayList<File>();
     }
 
-    public JPEGPatternList(String path) {
+    public JPEGPatternCollection(String path) {
         File patternDirectory = new File(path);
         if(patternDirectory.exists()) {
             this.root = path;

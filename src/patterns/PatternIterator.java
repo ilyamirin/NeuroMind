@@ -1,11 +1,11 @@
 package patterns;
 
 import java.util.Iterator;
-import patterns.JPEG.JPEGPatternList;
+import patterns.JPEG.JPEGPatternCollection;
 
 public class PatternIterator implements Iterator<Pattern> {
 
-    private JPEGPatternList store;
+    private JPEGPatternCollection store;
 
     private int pointer = 0;
 
@@ -13,7 +13,7 @@ public class PatternIterator implements Iterator<Pattern> {
         this.store = null;
     }
 
-    public PatternIterator(JPEGPatternList store, int pointer) {
+    public PatternIterator(JPEGPatternCollection store, int pointer) {
         this.store = store;
         this.pointer = pointer;
     }
