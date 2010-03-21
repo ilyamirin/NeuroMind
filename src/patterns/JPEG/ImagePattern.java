@@ -24,12 +24,8 @@ public class ImagePattern extends Pattern {
         this.h = 0;
     }
 
-    public ImagePattern(File file) throws Exception {
-        try {
-            load(file);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+    public ImagePattern(File file) throws IOException {
+        load(file);
     }//constructor
     
     private void getPixelsFromImg(BufferedImage bimg) throws IOException {
@@ -47,11 +43,12 @@ public class ImagePattern extends Pattern {
         java.util.regex.Pattern regex =
                 java.util.regex.Pattern.compile("^\\d+");
         Matcher matcher = regex.matcher(fileName);
-        if(matcher.find()) {
-            super.setId(Long.parseLong(matcher.group()));
-        } else {
-            throw new IOException("Pattern name " +fileName+ " is incorrect.");
-        }
+        if(matcher.find()) 
+            try {
+                super.setId(Long.parseLong(matcher.group()));
+            } catch (NumberFormatException numberFormatException) {
+                throw new IOException("Pattern or dir name is incorrect.");
+            }//try catch
 
         //loading outputs form parent directory name
         File parent = file.getParentFile();
