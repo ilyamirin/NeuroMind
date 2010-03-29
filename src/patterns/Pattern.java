@@ -18,6 +18,14 @@ public class Pattern {
         this.outputs = outputs;
     }
 
+    public Pattern(double[][] inputs, double[] outputs) {
+        this.inputs = new double[inputs.length * inputs[0].length];
+        for(int i = 0; i < inputs.length; i++)
+            for(int j = 0; j < inputs[0].length; j++)
+                this.inputs[i + inputs.length * j] = inputs[i][j];
+        this.outputs = outputs;
+    }
+
     public double getInput(int pos) {
         return inputs[pos];
     }
