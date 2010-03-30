@@ -1,19 +1,32 @@
 package convolutioner;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import perceptron.Perceptron;
+import java.util.Collection;
+import java.util.Iterator;
+import patterns.Pattern;
+import perceptron.functions.ITransferFunction;
 
-//TODO: написать сверточника
-//TODO: написать субдескретизатора как нейронку
 public class Convolutioner {
 
-    private Set<Perceptron> kernels;
-    
-    public List<Double[]> convolute() {
-        List<Double[]> result = new ArrayList<Double[]>();
-        return result;
+    //TODO: сделать несколько ядер?
+    private Kernel kernel;
+
+    public Convolutioner(int width, int height, ITransferFunction f) {
+        kernel = new Kernel(width, height, f);
     }
+
+    //TODO: реализовать
+    public void teach(Pattern pattern) {
+
+    }
+
+    public void teach(Collection<Pattern> patterns) {
+        for (Iterator<Pattern> it = patterns.iterator(); it.hasNext();)
+            teach(it.next());
+    }//teachList
+
+    //TODO: проетестировать
+    public double[] recognise(double[][] inputs) {
+        return kernel.activate(inputs);
+    }//recognise
 
 }

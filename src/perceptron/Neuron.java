@@ -25,6 +25,9 @@ public class Neuron {
             weights[i] += v * d * x[i];            
     }//changeWeights
 
+    public Neuron() {
+    }
+
     public Neuron(int weights, ITransferFunction function) {
         this.weights = new double[weights];
         for (int i = 0; i < this.weights.length; i++)
@@ -38,6 +41,14 @@ public class Neuron {
 
     public void setFunction(ITransferFunction function) {
         this.function = function;
+    }
+
+    public double[] getWeights() {
+        return weights;
+    }
+
+    public void setWeights(double[] weights) {
+        this.weights = weights;
     }
 
     @Override

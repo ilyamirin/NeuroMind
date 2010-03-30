@@ -66,6 +66,9 @@ public class Perceptron {
         return result;
     }//test
 
+    public Perceptron() {
+    }
+    
     public Perceptron(int inputs, int neurons, ITransferFunction function) {
         this.neurons = new Neuron[neurons];
         for (int i = 0; i < neurons; i++)
