@@ -25,7 +25,7 @@ public class ImagePattern extends Pattern {
     }
 
     private void pushInputs() {
-        super.setOutputs(new double[width * height * 3]);
+        super.setInputs(new double[width * height * 3]);
         for(int i = 0; i < width; i++) 
             for(int j = 0; j < height; j++) {
                 int[] rgb = grubRGB(bimg.getRGB(i, j));
@@ -72,5 +72,32 @@ public class ImagePattern extends Pattern {
             iOException.printStackTrace();
         }
     }//constructor
+
+    public double[] getInputs(int x, int y, int w, int h) {
+        double[] res = new double[w * h * 3];
+        w = x + w;
+        h = y + h;
+        for(int i = x; i < w; i++)
+            for(int j = y; j < h; j++)
+                for(int rgb = 0; rgb < 3; rgb++)
+                    super.getInput(i + j * width + rgb);
+        return res;
+    }//getInputs
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
 
 }

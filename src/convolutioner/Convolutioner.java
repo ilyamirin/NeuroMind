@@ -2,6 +2,7 @@ package convolutioner;
 
 import java.util.Collection;
 import java.util.Iterator;
+import patterns.Image.ImagePattern;
 import patterns.Pattern;
 import perceptron.functions.ITransferFunction;
 
@@ -25,8 +26,8 @@ public class Convolutioner {
     }//teachList
 
     //TODO: проетестировать
-    public double[] recognise(double[][] inputs) {
-        return kernel.activate(inputs);
+    public double[] recognise(ImagePattern ip) {
+        return kernel.activate(ip);
     }//recognise
 
 }
