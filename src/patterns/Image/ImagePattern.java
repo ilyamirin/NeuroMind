@@ -11,6 +11,7 @@ public class ImagePattern extends Pattern {
 
     private File file;
 
+    //TODO: удалить лишнюю ссылку???
     private BufferedImage bimg;
 
     private int width;
@@ -30,7 +31,7 @@ public class ImagePattern extends Pattern {
             for(int j = 0; j < height; j++) {
                 int[] rgb = grubRGB(bimg.getRGB(i, j));
                 for(int k = 0; k < 3; k++) 
-                    super.setOutput(rgb[k], i + j * width + k);
+                    super.setInput(rgb[k], i + j * width + k);
             }//for
     }//pushRGB
 
@@ -48,7 +49,7 @@ public class ImagePattern extends Pattern {
         }//try catch
     }//pushOutputs
 
-    public static Long grubIdFromFile(File file) {
+    public static Long grubIdFromFile(File file) {        
         String fileName = file.getName();
         java.util.regex.Pattern regex =
                 java.util.regex.Pattern.compile("^\\d+");
@@ -63,6 +64,7 @@ public class ImagePattern extends Pattern {
     public ImagePattern(File file) {
         try {
             bimg = ImageIO.read(file);
+            this.file = file;
             this.width = bimg.getWidth();
             this.height = bimg.getHeight();
             pushId();
@@ -72,6 +74,11 @@ public class ImagePattern extends Pattern {
             iOException.printStackTrace();
         }
     }//constructor
+
+    @Override
+    public double[] getInputs() {
+        return super.getInputs();
+    }//getInputs
 
     public double[] getInputs(int x, int y, int w, int h) {
         double[] res = new double[w * h * 3];
@@ -83,6 +90,12 @@ public class ImagePattern extends Pattern {
                     super.getInput(i + j * width + rgb);
         return res;
     }//getInputs
+
+    @Override
+    public double[] getOutputs() {
+        return super.getOutputs();
+    }//getInputs
+
 
     public int getHeight() {
         return height;

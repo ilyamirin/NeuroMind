@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
+//TODO: протестировать
 public class ImagePatternCollection implements Collection<Pattern> {
 
     private String root;

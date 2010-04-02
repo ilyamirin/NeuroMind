@@ -6,6 +6,7 @@ import patterns.Image.ImagePattern;
 import patterns.Pattern;
 import perceptron.functions.ITransferFunction;
 
+//TODO: протестировать
 public class Convolutioner {
 
     //TODO: сделать несколько ядер?
