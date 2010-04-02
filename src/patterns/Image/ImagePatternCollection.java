@@ -1,84 +1,34 @@
-package patterns.JPEG;
+package patterns.Image;
 
 import patterns.PatternIterator;
 import java.util.Collection;
 import java.util.Iterator;
 import patterns.Pattern;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageDecoder;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.regex.Matcher;
 
-public class JPEGPatternCollection implements Collection<Pattern> {
+public class ImagePatternCollection implements Collection<Pattern> {
 
     private String root;
 
     private boolean removeFromFilesystem = false;
 
-    private ArrayList<File> files;
-    
-    private static Long getIdFromFile(File file) {
-        String fileName = file.getName();
-        java.util.regex.Pattern regex =
-                java.util.regex.Pattern.compile("^\\d+");
-        Matcher matcher = regex.matcher(fileName);
-        if(matcher.find()) return Long.parseLong(matcher.group());
-        return null;
-    }
+    private ArrayList<File> files;  
 
-    private static double[] intToDouble(int[] in) {
-        double[] result = new double[in.length];
-        for (int i = 0; i < result.length; i++)
-            result[i] = in[i];
-        return result;
-    }
-
-    private static int[] getOutputsFromFile(File file) throws IOException {
-        File parent = file.getParentFile();
-        if(!parent.isDirectory())
-            throw new IOException(parent.getAbsolutePath()+" is not a directory!");
-        String filename = parent.getName();
-        int[] result = new int[filename.length()];
-        for(int i = 0; i < filename.length(); i++)
-            result[i] = Integer.parseInt(filename.substring(i, i+1));
-        return result;
-    }//getOutputsFromFilename
-
-   private static int[] getPixelsFromJPEG(File file)
-            throws IOException {
-        FileInputStream out = new FileInputStream(file);
-
-        JPEGImageDecoder jdecoder = JPEGCodec.createJPEGDecoder(out);
-
-        BufferedImage img = jdecoder.decodeAsBufferedImage();
-        out.close();
-
-        int[] result = new int[img.getWidth() * img.getHeight()];
-        for(int i = 0; i < img.getHeight(); i++)
-            for(int j = 0; j < img.getWidth(); j++)
-                result[i * img.getWidth() + j] = img.getRGB(j, i);
-
-        return result;
-    }//getPixelsFromJPEG
-
-    public JPEGPatternCollection() {
+    public ImagePatternCollection() {
         files = new ArrayList<File>();
     }
 
-    public JPEGPatternCollection(String path) {
+    public ImagePatternCollection(String path) {
         File patternDirectory = new File(path);
         if(patternDirectory.exists()) {
             this.root = path;
             File[] patternDirs =
-                    patternDirectory.listFiles(new JPEGPatternDirFilter());
+                    patternDirectory.listFiles(new ImagePatternDirFilter());
             files = new ArrayList<File>();
             for (int i = 0; i < patternDirs.length; i++) {
-                File[] jPats = patternDirs[i].listFiles(new JPEGPatternFilter());
+                File[] jPats = patternDirs[i].listFiles(new ImagePatternFilter());
                 for (int j = 0; j < jPats.length; j++)
                     files.add(jPats[j]);
             }//for 1
@@ -98,10 +48,10 @@ public class JPEGPatternCollection implements Collection<Pattern> {
         if(o.getClass() != Pattern.class) return false;
         Pattern pattern = (Pattern) o;
         for(int i = 0; i < size(); i++)
-            if(getIdFromFile(files.get(i)).equals(pattern.getId()))
+            if(ImagePattern.grubIdFromFile(files.get(i)).equals(pattern.getId()))
                 if(get(i).equals(pattern)) return true;            
         return false;
-    }
+    }//contains
     
     public Iterator<Pattern> iterator() {
         return new PatternIterator(this, 0);
@@ -123,7 +73,8 @@ public class JPEGPatternCollection implements Collection<Pattern> {
     public boolean add(Pattern e) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
+    //TODO: подумать о выносе поиска паттерна в отдельную функцию
     public boolean remove(Object o) {
         //TODO: оптимизировать
         if(o.getClass() != Pattern.class) return false;
@@ -132,7 +83,7 @@ public class JPEGPatternCollection implements Collection<Pattern> {
             return false;
         } else {
             for(int i = 0; i < size(); i++)
-                if(getIdFromFile(files.get(i)).equals(pattern.getId())) {
+                if(ImagePattern.grubIdFromFile(files.get(i)).equals(pattern.getId())) {
                     if(removeFromFilesystem) files.get(i).delete();
                     files.remove(i);
                 }
@@ -177,26 +128,10 @@ public class JPEGPatternCollection implements Collection<Pattern> {
         //TODO: дописать
         files.clear();
     }
-
-    //tested OK
+    
     public Pattern get(int i) {
         if (files.size() == 0) return null;
-
-        try {
-            File file = files.get(i);
-
-            Pattern pattern = new Pattern();
-
-            pattern.setId(getIdFromFile(file));
-            pattern.setOutputs(intToDouble(getOutputsFromFile(file)));
-            pattern.setInputs(intToDouble(getPixelsFromJPEG(file)));
-
-            return pattern;
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }//try catch
+        return new ImagePattern(files.get(i));
     }
 
 

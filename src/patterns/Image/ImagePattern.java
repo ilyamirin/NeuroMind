@@ -1,4 +1,4 @@
-package patterns.JPEG;
+package patterns.Image;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -48,13 +48,16 @@ public class ImagePattern extends Pattern {
         }//try catch
     }//pushOutputs
 
-    private void pushId() {
+    public static Long grubIdFromFile(File file) {
         String fileName = file.getName();
         java.util.regex.Pattern regex =
                 java.util.regex.Pattern.compile("^\\d+");
         Matcher matcher = regex.matcher(fileName);
-        Long id = matcher.find() ? Long.parseLong(matcher.group()) : null;
-        super.setId(id);
+        return matcher.find() ? Long.parseLong(matcher.group()) : null;
+    }
+
+    private void pushId() {
+        super.setId(ImagePattern.grubIdFromFile(file));
     }
 
     public ImagePattern(File file) {
