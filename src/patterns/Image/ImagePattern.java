@@ -72,4 +72,5 @@ public class ImagePattern extends Pattern {
             iOException.printStackTrace();
         }
     }//constructor
+
 }

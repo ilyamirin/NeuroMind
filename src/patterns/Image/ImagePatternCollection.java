@@ -118,12 +118,10 @@ public class ImagePatternCollection implements Collection<Pattern> {
         }
     }
 
-    //not tested
     public boolean retainAll(Collection<?> clctn) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-    //not tested
+    
     public void clear() {
         //TODO: дописать
         files.clear();
