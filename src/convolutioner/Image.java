@@ -7,9 +7,6 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import javax.imageio.ImageIO;
 
 public class Image {
@@ -19,6 +16,15 @@ public class Image {
     private BufferedImage bimg;
 
     private boolean[][] points;
+
+    public Image(String fileName) {
+        try {
+            loadImage(fileName);
+            fillPoints();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public void loadImage(String fileName) throws IOException {
         bimg = ImageIO.read(new File(fileName));
@@ -62,7 +68,7 @@ public class Image {
         return diff;
     }
 
-    public void getInputs() {
+    private void fillPoints() {
         Kernel kernel = new Kernel(3, 3, new float[] { 1f / 9f, 1f / 9f, 1f / 9f,
             1f / 9f, 1f / 9f, 1f / 9f, 1f / 9f, 1f / 9f, 1f / 9f });
         BufferedImageOp op = new ConvolveOp(kernel);
