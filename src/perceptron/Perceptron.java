@@ -30,7 +30,11 @@ public class Perceptron {
         for (int i = 0; i < this.neurons.length; i++)
             result[i] = this.neurons[i].activate(inputs);
         return result;
-    }//recognize    
+    }//recognize
+
+    public double[] recognize(Pattern p) {
+        return recognize(p.getInputs());
+    }
     
     public void teach(Pattern pattern) {
         double d = 0.0;

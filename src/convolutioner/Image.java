@@ -7,11 +7,16 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
 import javax.imageio.ImageIO;
+import patterns.Pattern;
 
-public class Image {
+//TODO: добавить логгер
+//TODO: добавить свясь с ядром
+public class Image implements Collection<Pattern> {
 
-    private int depth = 24;    
+    private int depth = 24;
 
     private BufferedImage bimg;
 
@@ -90,6 +95,73 @@ public class Image {
         System.out.println("найдено " + size + " точек");
         
     }//seekPoints()
-    
+
+    //TODO: test
+    private Pattern getPattern(int x1, int y1, int x2, int y2) {
+        int size = (x2 - x1) * (y2 - y1);
+        Pattern p = new Pattern();
+        p.setInputs(new double[size]);
+        for(int i = 0; i < points.length; i++)
+            for(int j = 0; j < points[0].length; j++)
+                if(points[i][j] == true) 
+                    p.setInput(1, i + points.length * j);
+        return p;
+    }
+
+    public int size() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    //TODO: test
+    public boolean isEmpty() {
+        return points == null ? true : false;
+    }
+
+    //TODO: extends
+    //TODO: test
+    public boolean contains(Object o) {
+        if(o.getClass() != Pattern.class) return false;        
+        return true;
+    }
+
+    public Iterator<Pattern> iterator() {
+        return new ColvolutionPatternIterator(this);
+    }
+
+    public Object[] toArray() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public <T> T[] toArray(T[] ts) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean add(Pattern e) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean remove(Object o) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean containsAll(Collection<?> clctn) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean addAll(Collection<? extends Pattern> clctn) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean removeAll(Collection<?> clctn) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean retainAll(Collection<?> clctn) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void clear() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
 }

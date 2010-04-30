@@ -9,6 +9,9 @@ public class PatternIterator implements Iterator<Pattern> {
 
     private int pointer = 0;
 
+    private int kwidth = 50;
+    private int kheight = 50;
+
     public PatternIterator() {
         this.store = null;
     }
