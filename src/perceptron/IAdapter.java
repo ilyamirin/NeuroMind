@@ -1,6 +1,6 @@
 package perceptron;
 
-public interface Adapter {
+public interface IAdapter {
 
     public double adapt(double value);
 

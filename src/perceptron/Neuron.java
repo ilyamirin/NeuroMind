@@ -14,7 +14,7 @@ public class Neuron {
     private ITransferFunction function;
 
     @XStreamAsAttribute
-    private Adapter adapter;
+    private IAdapter adapter;
 
     public double activate(double[] values) {
         double sum = 0;
@@ -40,16 +40,16 @@ public class Neuron {
         this.function = function;        
     }//constructor
 
-    public Neuron(int weights, ITransferFunction function, Adapter adapter) {
+    public Neuron(int weights, ITransferFunction function, IAdapter adapter) {
         this(weights, function);
         this.adapter = adapter;
     }//constructor
 
-    public Adapter getAdapter() {
+    public IAdapter getAdapter() {
         return adapter;
     }
 
-    public void setAdapter(Adapter adapter) {
+    public void setAdapter(IAdapter adapter) {
         this.adapter = adapter;
     }
 

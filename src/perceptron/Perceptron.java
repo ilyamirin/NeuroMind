@@ -131,4 +131,8 @@ public class Perceptron {
         this.v = v;
     }
 
+    public Neuron getNeuron(int neuron) {
+        return neurons[neuron];
+    }
+
 }
