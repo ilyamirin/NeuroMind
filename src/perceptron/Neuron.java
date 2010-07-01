@@ -13,10 +13,15 @@ public class Neuron {
     @XStreamAsAttribute
     private ITransferFunction function;
 
+    @XStreamAsAttribute
+    private Adapter adapter;
+
     public double activate(double[] values) {
         double sum = 0;
         for (int i = 0; i < weights.length; i++)
             sum += weights[i] * values[i];
+        if(adapter != null) 
+            sum = adapter.adapt(sum);        
         return function.transfer(sum);
     }//activate
 
@@ -34,6 +39,19 @@ public class Neuron {
             this.weights[i] = Math.random();        
         this.function = function;        
     }//constructor
+
+    public Neuron(int weights, ITransferFunction function, Adapter adapter) {
+        this(weights, function);
+        this.adapter = adapter;
+    }//constructor
+
+    public Adapter getAdapter() {
+        return adapter;
+    }
+
+    public void setAdapter(Adapter adapter) {
+        this.adapter = adapter;
+    }
 
     public ITransferFunction getFunction() {
         return function;
@@ -56,6 +74,7 @@ public class Neuron {
         XStream xstream = new XStream();
         xstream.processAnnotations(this.getClass());
         xstream.processAnnotations(function.getClass());
+        xstream.processAnnotations(adapter.getClass());
         return xstream.toXML(this);
     }
     
