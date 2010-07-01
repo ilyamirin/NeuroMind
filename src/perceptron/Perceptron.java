@@ -11,7 +11,6 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import patterns.Pattern;
 import perceptron.functions.ITransferFunction;
 import perceptron.functions.Sigmoid;
@@ -37,10 +36,11 @@ public class Perceptron {
         return recognize(p.getInputs());
     }
 
-    public double[] recognize(List<Double> list) {
-        double[] inputs = new double[list.size()];
-        for(int i = 0; list.size() > 0; i++) 
-            inputs[i] = list.get(i);        
+    public double[] recognize(Collection<Double> c) {
+        double[] inputs = new double[c.size()];
+        Iterator<Double> it = c.iterator();
+        for(int i = 0; it.hasNext(); i++)
+            inputs[i] = it.next();
         return recognize(inputs);
     }
     
